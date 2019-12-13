@@ -81,9 +81,9 @@ public class ReCaptcha {
          - Throws: Rethrows any exceptions thrown by `String(contentsOfFile:)`
          */
         public init(apiKey: String?, infoPlistKey: String?, baseURL: URL?, infoPlistURL: URL?) throws {
-            guard let filePath = Config.bundle.path(forResource: "recaptcha", ofType: "html") else {
+            /*guard let filePath = Config.bundle.path(forResource: "recaptcha", ofType: "html") else {
                 throw ReCaptchaError.htmlLoadError
-            }
+            }*/
 
             guard let apiKey = apiKey ?? infoPlistKey else {
                 throw ReCaptchaError.apiKeyNotFound
@@ -93,9 +93,13 @@ public class ReCaptcha {
                 throw ReCaptchaError.baseURLNotFound
             }
             
-            let rawHTML = (try? String(contentsOfFile: filePath)) ?? HTMLResources.main
+            if let filePath = Config.bundle.path(forResource: "recaptcha", ofType: "html") {
+                self.html = (try? String(contentsOfFile: filePath)) ?? HTMLResources.main
+            } else {
+                self.html = HTMLResources.main
+            }
 
-            self.html = rawHTML
+            //self.html = rawHTML
             self.apiKey = apiKey
             self.baseURL = Config.fixSchemeIfNeeded(for: domain)
         }
