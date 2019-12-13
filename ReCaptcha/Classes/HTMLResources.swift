@@ -26,6 +26,12 @@ struct HTMLResources {
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
       }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: rgb(28,28,30);
+        }
+      }
     </style>
     <script type="text/javascript">
       const post = function(value) {
