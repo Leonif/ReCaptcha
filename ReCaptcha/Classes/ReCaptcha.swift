@@ -92,8 +92,8 @@ public class ReCaptcha {
             guard let domain = baseURL ?? infoPlistURL else {
                 throw ReCaptchaError.baseURLNotFound
             }
-
-            let rawHTML = try String(contentsOfFile: filePath)
+            
+            let rawHTML = (try? String(contentsOfFile: filePath)) ?? HTMLResources.main
 
             self.html = rawHTML
             self.apiKey = apiKey
