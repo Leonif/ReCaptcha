@@ -14,19 +14,19 @@ struct HTMLResources {
 <html>
   <head>
     <meta name="viewport" content="width=device-width" />
-    <script type="text/css">
-      body div {
-        position: static;
-        width: 100%;
-        height: 100%;
+    <style type="text/css">
+      body > div {
+        position: static !important;
+        width: 100% !important;
+        height: 100% !important;
       }
 
-      body div div {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      body div > div {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
       }
-    </script>
+    </style>
     <script type="text/javascript">
       const post = function(value) {
         window.webkit.messageHandlers.recaptcha.postMessage(value);
