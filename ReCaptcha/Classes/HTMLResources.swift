@@ -164,6 +164,16 @@ struct HTMLResources {
         .g-recaptcha {
             display: inline-block;
         }
+
+        body {
+            background: #ffffff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: rgb(28,28,30);
+            }
+        }
     </style>
 
     <meta name="referrer" content="never">
@@ -230,7 +240,7 @@ struct HTMLResources {
         })
     </script>
 </head>
-<body bgcolor="#ffffff" oncontextmenu="return false">
+<body oncontextmenu="return false">
     <div id="div-captcha">
         <br>
         <img width="50%"/>
