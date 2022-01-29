@@ -41,11 +41,16 @@ public class ReCaptcha {
             }
         }
     }
+    
+    public enum PresentationStyle {
+        case invisiblePreferred
+        case alwaysVisible
+    }
 
     /** Internal data model for CI in unit tests
      */
     struct Config {
-        /// The raw unformated HTML file content
+        /// The raw unformatted HTML file content
         let html: String
 
         /// The API key that will be sent to the ReCaptcha API
@@ -80,7 +85,7 @@ public class ReCaptcha {
          Info.plist.
          - Throws: Rethrows any exceptions thrown by `String(contentsOfFile:)`
          */
-        public init(apiKey: String?, infoPlistKey: String?, baseURL: URL?, infoPlistURL: URL?) throws {
+        public init(apiKey: String?, infoPlistKey: String?, baseURL: URL?, infoPlistURL: URL?, presentationStyle: PresentationStyle) throws {
             /*guard let filePath = Config.bundle.path(forResource: "recaptcha", ofType: "html") else {
                 throw ReCaptchaError.htmlLoadError
             }*/
@@ -96,7 +101,10 @@ public class ReCaptcha {
             if let filePath = Config.bundle.path(forResource: "recaptcha", ofType: "html") {
                 self.html = (try? String(contentsOfFile: filePath)) ?? HTMLResources.main
             } else {
-                self.html = HTMLResources.main
+                switch presentationStyle {
+                case .invisiblePreferred: self.html = HTMLResources.main
+                case .alwaysVisible: self.html = HTMLResources.visible
+                }
             }
 
             //self.html = rawHTML
@@ -132,6 +140,7 @@ public class ReCaptcha {
     public convenience init(
         apiKey: String? = nil,
         baseURL: URL? = nil,
+        presentationStyle: PresentationStyle = .invisiblePreferred,
         endpoint: Endpoint = .default,
         locale: Locale? = nil
     ) throws {
@@ -140,7 +149,7 @@ public class ReCaptcha {
         let plistApiKey = infoDict?[Constants.InfoDictKeys.APIKey] as? String
         let plistDomain = (infoDict?[Constants.InfoDictKeys.Domain] as? String).flatMap(URL.init(string:))
 
-        let config = try Config(apiKey: apiKey, infoPlistKey: plistApiKey, baseURL: baseURL, infoPlistURL: plistDomain)
+        let config = try Config(apiKey: apiKey, infoPlistKey: plistApiKey, baseURL: baseURL, infoPlistURL: plistDomain, presentationStyle: presentationStyle)
 
         self.init(manager: ReCaptchaWebViewManager(
             html: config.html,

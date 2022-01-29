@@ -134,4 +134,112 @@ struct HTMLResources {
 </html>
 """#
     
+
+    
+    static let visible = #"""
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+        form {
+            text-align: center;
+        }
+        
+        body {
+            text-align: center;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        div-captcha {
+            text-align: center;
+        }
+
+        .g-recaptcha {
+            display: inline-block;
+        }
+    </style>
+
+    <meta name="referrer" content="never">
+    <script type='text/javascript' src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        const post = function(value) {
+            window.webkit.messageHandlers.recaptcha.postMessage(value);
+        }
+
+        console.log = function(message) {
+            post({ log: message });
+        }
+
+        const observers = new Array();
+        const observeDOM = function(element, completion) {
+            const obs = new MutationObserver(completion);
+            obs.observe(element, {
+              attributes: true,
+              childList: true,
+              subtree: true,
+              attributeFilter: ["style"]
+            });
+
+            observers.push(obs);
+        };
+
+        const clearObservers = function() {
+            observers.forEach(function(o) {
+                o.disconnect();
+            });
+            observers = [];
+        };
+
+        const execute = function() {
+            console.log("executing - noop");
+        }
+
+        const reset = function() {
+            console.log("resetting");
+            grecaptcha.reset();
+            grecaptcha.ready(function() {
+                post({ action: "didLoad" })
+            });
+        }
+
+        function callback(token) {
+            console.log(token);
+            post({ token })
+            clearObservers();
+        }
+        
+        function errorCallback() {
+            post({ error: 28 })
+            clearObservers()
+        }
+
+        function expiredCallback() {
+            post({ error: 29 })
+            clearObservers()
+        }
+
+        grecaptcha.ready(function() {
+            post({ action: "didLoad" })
+        })
+    </script>
+</head>
+<body bgcolor="#ffffff" oncontextmenu="return false">
+    <div id="div-captcha">
+        <br>
+        <img width="50%"/>
+        <br><br>
+        <div class="g-recaptcha" data-sitekey="${apiKey}" data-callback="callback" data-expired-callback="expiredCallback" data-error-callback="errorCallback"></div>
+    </div>
+    <br>
+</body>
+</html>
+"""#
+    
 }
