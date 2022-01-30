@@ -221,20 +221,29 @@ struct HTMLResources {
         };
 
         const execute = function() {
-            console.log("executing - noop");
+            console.log("executing");
+
+            //document.getElementsByClassName("recaptcha-checkbox")[0].click()
+            /*setTimeout(function() {
+                console.log(document.getElementsByTagName("iframe")[0].outerHTML)
+                document.getElementsByTagName("iframe")[0].click()
+            }, 5000)*/
 
             /*try {
                 document.getElementsByTagName("div")[4].outerHTML = "";
-            } catch(e) { console.log("temp error") }
+            } catch(e) { console.log("temp error") }*/
 
             try {
-                observeDOM(document.getElementsByTagName("div")[3], function() {
-                    post({ action: "showReCaptcha" })
-                    console.log(document.getElementsByTagName("div")[3].outerHTML)
+                observeDOM(document.getElementsByTagName("body")[0], function() {
+                    // Removes ReCaptcha dismissal when clicking outside div area
+                    const backgroundElement = document.getElementsByTagName("div")[5]
+                    if (backgroundElement.outerHTML !== "<div></div>") {
+                        backgroundElement.outerHTML = "<div></div>"
+                    }
                 })
             } catch (e) {
                 post({ error: 27 })
-            }*/
+            }
         }
 
         const reset = function() {
