@@ -162,7 +162,20 @@ struct HTMLResources {
         }
 
         .g-recaptcha {
-            display: inline-block;
+            /*display: inline-block;*/
+        }
+
+        .g-recaptcha > div {
+            position: static !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .g-recaptcha div > div {
+            position: absolute;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
         }
 
         body {
@@ -209,6 +222,19 @@ struct HTMLResources {
 
         const execute = function() {
             console.log("executing - noop");
+
+            /*try {
+                document.getElementsByTagName("div")[4].outerHTML = "";
+            } catch(e) { console.log("temp error") }
+
+            try {
+                observeDOM(document.getElementsByTagName("div")[3], function() {
+                    post({ action: "showReCaptcha" })
+                    console.log(document.getElementsByTagName("div")[3].outerHTML)
+                })
+            } catch (e) {
+                post({ error: 27 })
+            }*/
         }
 
         const reset = function() {
@@ -242,12 +268,8 @@ struct HTMLResources {
 </head>
 <body oncontextmenu="return false">
     <div id="div-captcha">
-        <br>
-        <img width="50%"/>
-        <br><br>
         <div class="g-recaptcha" data-sitekey="${apiKey}" data-callback="callback" data-expired-callback="expiredCallback" data-error-callback="errorCallback"></div>
     </div>
-    <br>
 </body>
 </html>
 """#
