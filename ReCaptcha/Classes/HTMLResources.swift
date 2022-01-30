@@ -242,6 +242,7 @@ struct HTMLResources {
             grecaptcha.reset();
             grecaptcha.ready(function() {
                 post({ action: "didLoad" })
+                post({ action: "showReCaptcha" })
             });
         }
 
@@ -263,6 +264,7 @@ struct HTMLResources {
 
         grecaptcha.ready(function() {
             post({ action: "didLoad" })
+            post({ action: "showReCaptcha" })
         })
     </script>
 </head>
